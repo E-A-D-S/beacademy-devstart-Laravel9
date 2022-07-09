@@ -4,7 +4,16 @@
 
 
 <h1> USUÁRIO {{$user->name}}</H1>
-<form action="{{ route('users.update', $user->id) }}" method="post">
+      @if($errors->any()) 
+
+      <div class="alert alert-danger" role="alert">
+        @foreach($errors->all() as $error)
+            {{ $error }}<br>
+        @endforeach
+      </div>
+  @endif
+
+<form action="{{ route('users.update', $user->id) }}" method="post" enctype="multipart/form-data">
 @method('PUT')
 @csrf
   <div class="mb-3">
@@ -19,6 +28,11 @@
     <label for="password" class="form-label">Senha</label>
     <input type="password" class="form-control" id="password" name="password">
   </div>
+  
+  <div class="mb-3">
+          <label for="image" class="form-label"> Selecione uma Imagem</label>
+          <input type="file" class="form-control form control-md" id="image" name="image"/>
+        </div>
   <button type="submit" class="btn btn-primary">Atualizar</button>
   
 </form>

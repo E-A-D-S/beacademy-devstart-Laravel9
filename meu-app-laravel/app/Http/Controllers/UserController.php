@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreUpdateUserFormRequest;
+
 
 class Usercontroller extends Controller
 {
@@ -13,7 +14,7 @@ class Usercontroller extends Controller
     }
    public function index() 
    {
-        $users = User::all();
+        $users = User::paginate(5);
 
         return view('users.index', compact('users'));
    }
@@ -38,8 +39,9 @@ class Usercontroller extends Controller
     return view('users.create');
    }
 
-   public function store(Request $request)
+   public function store(StoreUpdateUserFormRequest $request)
    {
+    
         //$user = new User;
         //$user->name = $request->name;
         //$user->email = $request->email;
@@ -49,6 +51,13 @@ class Usercontroller extends Controller
         $data = $request->all();
         $data['password'] = bcrypt($request->password);
 
+
+        if($request->image) {
+        $file = $request['image'];
+        $path = $file ->store('profile', 'public');
+        $data['image'] = $path;
+        }
+ 
         $this->model->create($data);
         return redirect()->route('users.index');
 }
@@ -60,7 +69,7 @@ class Usercontroller extends Controller
          
         return view('users.edit', compact('user'));    
     }
-        public function update(Request $request, $id)
+        public function update(StoreUpdateUserFormRequest $request, $id)
         {
             
         if (!$user = $this->model->find($id))
@@ -75,5 +84,16 @@ class Usercontroller extends Controller
                 return redirect()->route('users.index');
 
         }
-} 
 
+        public function destroy($id)
+        {
+ 
+            if(!$user = $this->model->find($id))
+                return redirect()->route('users.index');
+               
+                $user->delete();
+
+                return redirect()->route('users.index');
+
+        }
+    }
