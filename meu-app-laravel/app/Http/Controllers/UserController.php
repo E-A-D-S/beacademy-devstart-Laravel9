@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreUpdateUserFormRequest;
-
+use App\Models\Team;
 
 class Usercontroller extends Controller
 {
@@ -22,15 +22,11 @@ class Usercontroller extends Controller
    public function show($id)
    {
 
-        if (!$user = User::find($id))
-            return redirect()->route('users.index');
+        if (!$user = User::findOrfail($id))
+        return redirect()->route('users.index');
 
-        //$user = User::findOrFail($id);
-        $title = 'Usuário ' .$user->name;
-
-    //$user = User::where('id', $id)->first();
-        
-    return view('users.show', compact('user', 'title'));
+    
+            return view('users.show', compact('user'));
    }
 
 
@@ -76,8 +72,15 @@ class Usercontroller extends Controller
         return redirect()->route('users.index');
 
         $data = $request->only('name', 'email');
-            if($request->password)
+            if($request->password) {
                 $data['password']= bcrypt($request->password);
+            }
+        
+            if($request->image) {
+             $file = $request['image'];
+                $path = $file ->store('profile', 'public');
+                $data['image'] = $path;
+            }
 
                 $user->update($data);
                 

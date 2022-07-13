@@ -2,9 +2,20 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
+    PostController,
     UserController,
+    TeamController,
     ViaCepController
 };
+
+Route::get("/user/team/{id}", [TeamController::class, 'show'])->name('team.show');
+//Route::get("/team/{id}", [TeamController::class, 'show'])->name('team.show');
+//Route::get("/user/team/{id}", [TeamController::class, 'show'])->name('team.team'); colocando o arquivo chamado team.blade dentro da pasta users
+
+
+Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
+Route::get('/users/{id}/posts', [PostController::class, 'show'])->name('posts.show');
+
 
 Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
 Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
@@ -18,3 +29,4 @@ Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
 Route::get('/viacep',[ViaCepController::class, 'index'])->name('viacep.index');
 Route::post('/viacep',[ViaCepController::class, 'index'])->name('viacep.index.post');
 Route::get('/viacep/{cep}', [ViaCepController::class, 'show'])->name('viacep.show');
+
