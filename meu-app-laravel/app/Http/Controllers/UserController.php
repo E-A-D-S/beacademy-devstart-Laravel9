@@ -1,32 +1,53 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\User;
-use Illuminate\Http\Request;
 use App\Http\Requests\StoreUpdateUserFormRequest;
-use App\Models\Team;
+use Illuminate\Http\Request;
+
 
 class Usercontroller extends Controller
 {
+    protected $model;
+
     public function __construct(User $user)
     {
         $this->model = $user;
     }
-   public function index() 
-   {
-        $users = User::paginate(5);
+
+    public function index(Request $request) 
+{
+        $users = $this->model->getUsers(
+            $request->search ??''
+        );
 
         return view('users.index', compact('users'));
    }
-
    public function show($id)
    {
+       // $user = User::where('id', $id)->first();
+       // $user = User::findOrFail($id);
+       // $user = User::find($id);
+       // return $user;
 
-        if (!$user = User::findOrfail($id))
+        if(!$user = User::find($id)) {
         return redirect()->route('users.index');
+       }
+       
+       // return view('users.show', compact('user'));
 
-    
-            return view('users.show', compact('user'));
+       // return view('users.show', compact('user', 'title'));
+
+       //$team = Team::find($id);
+       //$team->load('users');
+       
+       // return $team;
+
+        // $user->load('teams');
+        // $title = "Usuário ".$user->name;
+        // return $user;
+      
    }
 
 
@@ -98,5 +119,10 @@ class Usercontroller extends Controller
 
                 return redirect()->route('users.index');
 
+        }
+
+        public function admin()
+        {
+            return view('admin.index');
         }
     }

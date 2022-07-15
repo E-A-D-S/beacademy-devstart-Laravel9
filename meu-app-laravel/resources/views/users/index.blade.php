@@ -2,12 +2,26 @@
 @section('title', 'Listagem de Usuários')
 @section ('body')
         <h1> Listagem de Usuários</h1>
-        <a href="{{route('users.create')}}" class="btn btn-outline-dark"> Novo Usuário</a>
   
+        <div class="container">
+            <div class="row">
+                  <div class="col-sm mt-2 mb-5">
+                   <a href="{{ route('users.create') }}" class="btn btn-outline-dark"> Novo Usuário</a>
+                  </div>
+                  <div class="col-sm mt-2 mb-5">
+                        <form action="{{ route('users.index') }}" method="GET">
+                          <div class="input-group">
+                              <input type="search" class="form-control rounded" name="search" />
+                              <button type="submit" class="btn btn-outline-primary">Pesquisar</button>
+                        </div>
+                        </form>
+                  </div>
+            </div>
+      </div>
+
           <table class="table">
              <thead class=" text-center">
                 <tr>
-
                 <th scope="col">Foto</th>
                  <th scope="col">Id</th>
                  <th scope="col">Nome</th>
@@ -18,7 +32,7 @@
                 </tr>
             </thead>
             <tbody class=" text-center">
-                @foreach($users as $user)
+                 @foreach($users as $user)
                     <tr>
                          @if($user->image)
                          <th><img src=" {{ asset('storage/'.$user->image) }}" width="50px" height="50px" class="rounded-circle"/></th>
@@ -39,7 +53,9 @@
                  @endforeach
                  
            </tbody>
-     </table>
-    <div class="justify-content-center pagination">
-      {{ $users->links('pagination::bootstrap-4') }}
+           </table>
+            <div class="justify-content-center pagination">
+                {{ $users->links('pagination::bootstrap-4') }}
+            </div>
+    </div>
 @endsection
