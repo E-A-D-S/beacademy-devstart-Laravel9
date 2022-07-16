@@ -14,7 +14,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <div class="container">
                     <div class="row">
-                        <div class="col-9">
+                        <div class="col-8">
                             <ul class="navbar-nav mr-auto">
                                 <li class="nav-item active">
                                     <a class="nav-link text-white" href="/users">Usuários</a>
@@ -24,25 +24,25 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="col-3">
+                        <div class="col-4">
                             <ul class="navbar-nav mr-auto">
                                 @if(Auth::user())
                                     <li class="nav-item">
                                         <a class="nav-link text-white" href="#">{{ Auth::user()->name }}</a>
                                     </li>
                                     @if(Auth::user()->is_admin == 1)
-                                            <li class="nav-item">
-                                                <a class="nav-link text-white" href="{{ route('admin') }}">Dashboard</a>
-                                            </li>
-                                    @endif
                                         <li class="nav-item">
-                                            <form method="POST" action="{{ route('logout') }}">
+                                            <a class="nav-link text-white" href="{{ route('admin') }}">Dashboard</a>
+                                    </li>
+                                    @endif
+                                    <li class="nav-item">
+                                        <form method="POST" action="{{ route('logout') }}">
                                             @csrf
-                                            <a class="nav-link text-white"><span  :href="route('logout')"
+                                            <x-responsive-nav-link class="nav-link text-white" :href="route('logout')"
                                                     onclick="event.preventDefault();
                                                                 this.closest('form').submit();">
                                                 {{ __('Sair') }}
-                                            <span></a>
+                                            </x-responsive-nav-link>
                                         </form>
                                     </li>                        
                                 @else

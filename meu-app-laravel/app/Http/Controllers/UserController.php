@@ -35,7 +35,7 @@ class Usercontroller extends Controller
         return redirect()->route('users.index');
        }
        
-       // return view('users.show', compact('user'));
+        return view('users.show', compact('user'));
 
        // return view('users.show', compact('user', 'title'));
 
