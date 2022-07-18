@@ -46,8 +46,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-        public function getUsers(string $search = null)
-        {
+    public function getUsers(string $search = null)
+    {
         $users = $this->where( function ($query) use ($search) {
             if($search) {
                 $query->where('email', $search);
@@ -57,7 +57,7 @@ class User extends Authenticatable
         ->paginate(5);
 
         return $users;
-}
+    }
     
 
     public function posts()

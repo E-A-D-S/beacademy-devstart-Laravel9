@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\UserControllerException;
 use App\Models\User;
 use App\Http\Requests\StoreUpdateUserFormRequest;
 use Illuminate\Http\Request;
@@ -30,12 +31,19 @@ class Usercontroller extends Controller
        // $user = User::findOrFail($id);
        // $user = User::find($id);
        // return $user;
+        
+        //if(!$user = User::findOrFail($id)) {
+        //return redirect()->route('users.index');
+            $user = User::find($id);
 
-        if(!$user = User::find($id)) {
-        return redirect()->route('users.index');
-       }
+            if($user){
+                return view('users.show', compact('user'));
+
+            }else{
+                throw new UserControllerException('User não encontrado');
+        }
        
-        return view('users.show', compact('user'));
+        //return view('users.show', compact('user'));
 
        // return view('users.show', compact('user', 'title'));
 
@@ -76,7 +84,7 @@ class Usercontroller extends Controller
         }
  
         $this->model->create($data);
-        return redirect()->route('users.index');
+        return redirect()->route('users.index')->with('create','Usuário cadastrado com sucesso');
 }
 
     public function edit($id)
@@ -102,10 +110,14 @@ class Usercontroller extends Controller
                 $path = $file ->store('profile', 'public');
                 $data['image'] = $path;
             }
+                $data['is_admin'] = $request->admin? 1 : 0;
 
                 $user->update($data);
                 
-                return redirect()->route('users.index');
+                //return redirect()->route('users.index');
+
+                return redirect()->route('users.index')->with('edit','Usuário atualizado com sucesso');
+
 
         }
 
@@ -117,7 +129,10 @@ class Usercontroller extends Controller
                
                 $user->delete();
 
-                return redirect()->route('users.index');
+                //return redirect()->route('users.index');
+
+                return redirect()->route('users.index')->with('destroy','Usuário deletado com sucesso');
+
 
         }
 

@@ -22,7 +22,7 @@
             <td>{{$post->user->name}}</td>
             <td>{{$post->title}}</td>
             <td>{{$post->post}}</td>
-            <td>{{ date('d/m/Y H:i', strtotime($post->created_at))}}</td>
+            <td>{{ date('d/m/Y H:i', strtotime($post->created_at)) }}</td>
         </tr>
         @endforeach
     </tbody>
