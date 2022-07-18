@@ -84,6 +84,7 @@ class Usercontroller extends Controller
         }
  
         $this->model->create($data);
+        
         return redirect()->route('users.index')->with('create','Usuário cadastrado com sucesso');
 }
 
